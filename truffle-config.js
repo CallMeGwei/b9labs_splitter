@@ -17,11 +17,11 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
+const fs = require('fs');
 
 const HDWalletProvider = require('truffle-hdwallet-provider');
-const infuraKey = "16fe83afbf5d4942b493d4b3d9d511a3";
+const infuraKey = fs.readFileSync(".secret_infura").toString().trim();
 
-const fs = require('fs');
 const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {

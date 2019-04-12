@@ -6,11 +6,19 @@ contract Splitter{
     address payable bob;
     address payable carol;
     
-    event LogSplit(address indexed who, uint amountToSplit, uint splitPortion);
-    
+    event LogSetAddresses(address indexed whoCanSplit, address indexed whoGetsOneHalf, address indexed whoGetsOtherHalf);
+    event LogSplit(uint amountToSplit, uint splitPortion);
+
     constructor(address setAlice, address payable setBob, address payable setCarol) public {
+        // Niether Alice, Bob, nor Carol should be unset (or 0x).
+        require(setAlice != address(0));
+        require(setBob != address(0));
+        require(setCarol != address(0));
+
         // not strictly necessary, but Alice, Bob, and Carol should probably be different entities.
-        require((setAlice != setBob) && (setAlice != setCarol) && (setBob != setCarol));
+        require(setAlice != setBob);
+        require(setAlice != setCarol);
+        require(setBob != setCarol);
         
         alice = setAlice;
         bob = setBob;
@@ -26,6 +34,6 @@ contract Splitter{
         bob.transfer(splitPortion);
         carol.transfer(splitPortion);
         
-        emit LogSplit(alice, msg.value, splitPortion);
+        emit LogSplit(msg.value, splitPortion);
     }
 }

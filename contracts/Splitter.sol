@@ -6,9 +6,9 @@ contract Splitter{
 
     using SafeMath for uint;
 
-    // balances will be stored as 30 digit values
-    // up to 27 digits for ether and 3 digits for decimal portion
-    uint numDecimals = 3;
+    // balances will be stored as 32 digit values
+    // up to 27 digits for ether and 5 digits for decimal portion
+    uint numDecimals = 2;
 
     uint bobBalance;
     uint carolBalance;
@@ -73,6 +73,16 @@ contract Splitter{
             
         } else {
             revert();
+        }
+    }
+
+    function getBalance() public view returns(uint balance){
+        if (msg.sender == bob){
+            return bobBalance;
+        } else if (msg.sender == carol){
+            return carolBalance;
+        } else {
+            return 0;
         }
     }
 }

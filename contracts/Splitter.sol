@@ -8,10 +8,10 @@ contract Splitter{
 
     // balances will be stored as 32 digit values
     // up to 27 digits for ether and 5 digits for decimal portion
-    uint numDecimals = 2;
+    uint numDecimals = 5;
 
-    uint bobBalance;
-    uint carolBalance;
+    mapping (address => bool) withdrawalPermissions;
+    mapping (address => uint) balances;
     
     address payable alice;
     address payable bob;
@@ -37,6 +37,10 @@ contract Splitter{
         bob = setBob;
         carol = setCarol;
 
+        // mark bob and carol as having permission for withdrawals
+        withdrawalPermissions[bob] = true;
+        withdrawalPermissions[carol]= true;
+
         emit LogSetAddresses(alice, bob, carol);
     }
     
@@ -46,43 +50,41 @@ contract Splitter{
         
         uint amountToSplit = msg.value.mul(10 ** numDecimals);
         
-        bobBalance = bobBalance.add(amountToSplit / 2);
-        carolBalance = carolBalance.add(amountToSplit / 2);
+        balances[bob] = balances[bob].add(amountToSplit / 2);
+        balances[carol] = balances[carol].add(amountToSplit / 2);
         
         emit LogSplit(msg.value, amountToSplit / 2);
     }
 
     function withdraw() public{
-        if (msg.sender == bob){
-            uint withdrawable = bobBalance.div(10 ** numDecimals);
+        uint withdrawable;
+
+        if ( withdrawalPermissions[msg.sender] ){
+
+            withdrawable = balances[msg.sender].div(10 ** numDecimals);
             
             // optimistically mark this as transferred, if it fails this will be reverted anyway
-            bobBalance = bobBalance.sub(withdrawable.mul(10 ** numDecimals));
-            bob.transfer(withdrawable);
+            balances[msg.sender] = balances[msg.sender].sub(withdrawable.mul(10 ** numDecimals));
+            msg.sender.transfer(withdrawable);
 
-            emit LogWithdrawal(bob, withdrawable);
-
-        } else if (msg.sender == carol){
-            uint withdrawable = carolBalance;
-
-            // optimistically mark this as transferred, if it fails this will be reverted anyway
-            carolBalance = carolBalance.sub(withdrawable.mul(10 ** numDecimals));
-            carol.transfer(carolBalance);
-
-            emit LogWithdrawal(carol, withdrawable);
-            
         } else {
+
             revert();
+
         }
+        
+        emit LogWithdrawal(msg.sender, withdrawable);
     }
 
     function getBalance() public view returns(uint balance){
-        if (msg.sender == bob){
-            return bobBalance;
-        } else if (msg.sender == carol){
-            return carolBalance;
+        if ( withdrawalPermissions[msg.sender] ){
+
+            return balances[msg.sender];
+
         } else {
+
             return 0;
+            
         }
     }
 }

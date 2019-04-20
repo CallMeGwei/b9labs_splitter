@@ -1,6 +1,14 @@
 pragma solidity 0.5.7;
 
+import "./SafeMath.sol";
+
 contract Splitter{
+
+    using SafeMath for uint;
+
+    // balances will be stored as 30 digit values
+    // up to 27 digits for ether and 3 digits for decimal portion
+    uint numDecimals = 3;
 
     uint bobBalance;
     uint carolBalance;
@@ -33,33 +41,35 @@ contract Splitter{
     }
     
     function splitBetween() public payable {
+        // only Alice can split
         require(msg.sender == alice);
         
-        uint splitPortion = msg.value / 2;
-        assert(splitPortion > 0);
+        uint amountToSplit = msg.value.mul(10 ** numDecimals);
         
-        bobBalance += splitPortion;
-        carolBalance += splitPortion;
+        bobBalance = bobBalance.add(amountToSplit / 2);
+        carolBalance = carolBalance.add(amountToSplit / 2);
         
-        emit LogSplit(msg.value, splitPortion);
+        emit LogSplit(msg.value, amountToSplit / 2);
     }
 
     function withdraw() public{
         if (msg.sender == bob){
-            uint bobBalanceBeforeWithdraw = bobBalance;
+            uint withdrawable = bobBalance.div(10 ** numDecimals);
+            
+            // optimistically mark this as transferred, if it fails this will be reverted anyway
+            bobBalance = bobBalance.sub(withdrawable.mul(10 ** numDecimals));
+            bob.transfer(withdrawable);
 
-            bob.transfer(bobBalance);
-            bobBalance = 0;
-
-            emit LogWithdrawal(bob, bobBalanceBeforeWithdraw);
+            emit LogWithdrawal(bob, withdrawable);
 
         } else if (msg.sender == carol){
-            uint carolBalanceBeforeWithdraw = carolBalance;
+            uint withdrawable = carolBalance;
 
+            // optimistically mark this as transferred, if it fails this will be reverted anyway
+            carolBalance = carolBalance.sub(withdrawable.mul(10 ** numDecimals));
             carol.transfer(carolBalance);
-            carolBalance = 0;
 
-            emit LogWithdrawal(carol, carolBalanceBeforeWithdraw);
+            emit LogWithdrawal(carol, withdrawable);
             
         } else {
             revert();

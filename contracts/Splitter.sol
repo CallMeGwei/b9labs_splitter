@@ -10,8 +10,7 @@ contract Splitter{
     // up to 27 digits for ether and 5 digits for decimal portion
     uint numDecimals = 5;
 
-    mapping (address => bool) withdrawalPermissions;
-    mapping (address => uint) balances;
+    mapping (address => uint) public balances;
     
     address payable alice;
     address payable bob;
@@ -22,6 +21,7 @@ contract Splitter{
     event LogWithdrawal(address indexed whoWithdrew, uint amountWithdrawn);
 
     constructor(address payable setAlice, address payable setBob, address payable setCarol) public {
+
         // Niether Alice, Bob, nor Carol should be unset (or 0x).
         require(setAlice != address(0));
         require(setBob != address(0));
@@ -37,14 +37,11 @@ contract Splitter{
         bob = setBob;
         carol = setCarol;
 
-        // mark bob and carol as having permission for withdrawals
-        withdrawalPermissions[bob] = true;
-        withdrawalPermissions[carol]= true;
-
         emit LogSetAddresses(alice, bob, carol);
     }
     
     function splitBetween() public payable {
+
         // only Alice can split
         require(msg.sender == alice);
         
@@ -57,34 +54,17 @@ contract Splitter{
     }
 
     function withdraw() public{
-        uint withdrawable;
 
-        if ( withdrawalPermissions[msg.sender] ){
+        require( balances[msg.sender] > 0, "Nothing available to withdraw.");
+        require( msg.sender == bob || msg.sender == carol );
 
-            withdrawable = balances[msg.sender].div(10 ** numDecimals);
-            
-            // optimistically mark this as transferred, if it fails this will be reverted anyway
-            balances[msg.sender] = balances[msg.sender].sub(withdrawable.mul(10 ** numDecimals));
-            msg.sender.transfer(withdrawable);
-
-        } else {
-
-            revert();
-
-        }
+        uint withdrawable = balances[msg.sender].div(10 ** numDecimals);
         
+        // optimistically mark this as transferred, if it fails this will be reverted anyway
+        balances[msg.sender] = balances[msg.sender].sub(withdrawable.mul(10 ** numDecimals));
+        msg.sender.transfer(withdrawable);
+
         emit LogWithdrawal(msg.sender, withdrawable);
-    }
 
-    function getBalance() public view returns(uint balance){
-        if ( withdrawalPermissions[msg.sender] ){
-
-            return balances[msg.sender];
-
-        } else {
-
-            return 0;
-            
-        }
     }
 }

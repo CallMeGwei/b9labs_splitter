@@ -1,7 +1,7 @@
 const Splitter = artifacts.require("Splitter");
 const truffleAssert = require("truffle-assertions");
 
-const numDecimals = 5;
+const numDecimals = 1;
 
 contract("Splitter", async accounts  => {
 
@@ -13,7 +13,7 @@ contract("Splitter", async accounts  => {
     it("Alice's account should be debited by one ether.", async () => {
         let instance = await Splitter.deployed();
         let aliceInitalBalance = await web3.eth.getBalance(alice);
-        await instance.splitBetween( {from: alice, value: web3.utils.toWei("1", "ether")} );
+        await instance.splitBetween( bob, carol, {from: alice, value: web3.utils.toWei("1", "ether")} );
         let aliceAfterSplitBalance = await web3.eth.getBalance(alice);
         assert.isBelow(parseInt(aliceAfterSplitBalance), parseInt(aliceInitalBalance - web3.utils.toWei("1", "ether")), "Alice balance did not go down by one ether plus gas.");
     });

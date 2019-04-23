@@ -36,21 +36,23 @@ contract Splitter{
         balances[splitToAccount2] = balances[splitToAccount2].add(msg.value / 2);
 
         // if there is a remainder (an odd wei), add it to the account of the sender.
-        balances[msg.sender] = balances[msg.sender].add(msg.value % 2);
+        if ( msg.value % 2 > 0 ){
+            balances[msg.sender] = balances[msg.sender].add(msg.value % 2);
+        }
         
         emit LogSplit(msg.sender, msg.value, splitToAccount1, splitToAccount2);
     }
 
     function withdraw() public{
 
-        require( balances[msg.sender] > 0, "Nothing available to withdraw." );
-      
-        uint withdrawable = balances[msg.sender];
+        uint balance = balances[msg.sender];
+
+        require( balance > 0, "Nothing available to withdraw." );
 
         // optimistically mark this as transferred, if it fails this will be reverted anyway
         balances[msg.sender] = 0;
-        msg.sender.transfer(withdrawable);
+        msg.sender.transfer(balance);
 
-        emit LogWithdrawal(msg.sender, withdrawable);
+        emit LogWithdrawal(msg.sender, balance);
     }
 }

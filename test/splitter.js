@@ -1,8 +1,6 @@
 const Splitter = artifacts.require("Splitter");
 const truffleAssert = require("truffle-assertions");
 
-const numDecimals = 1;
-
 contract("Splitter", async accounts  => {
 
     const alice  = accounts[0];
@@ -22,8 +20,8 @@ contract("Splitter", async accounts  => {
         let instance = await Splitter.deployed();
         let bobContractBalance = await instance.balances(bob);
         let carolContractBalance = await instance.balances(carol);
-        assert.equal(bobContractBalance.toString(), web3.utils.toWei(".5", "ether") * 10 ** numDecimals, "Bob's balance is wrong.");
-        assert.equal(carolContractBalance.toString(), web3.utils.toWei(".5", "ether") * 10 ** numDecimals, "Carol's balance is wrong.");
+        assert.equal(bobContractBalance.toString(), web3.utils.toWei(".5", "ether"), "Bob's balance is wrong.");
+        assert.equal(carolContractBalance.toString(), web3.utils.toWei(".5", "ether"), "Carol's balance is wrong.");
     });
 
     it("Bob should be able to withdraw his ether contract balance, his on-chain balance should increase, and his contract balance should go to zero.", async () => {

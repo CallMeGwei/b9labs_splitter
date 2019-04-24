@@ -1,26 +1,16 @@
 pragma solidity 0.5.7;
 
 import "./SafeMath.sol";
+import "./Ownable.sol";
 
-contract Splitter{
+contract Splitter is Ownable{
 
     using SafeMath for uint;
 
     mapping (address => uint) public balances;
     
-    address payable owner;
-    
-    event LogSetOwner(address indexed whoIsOwner);
     event LogSplit(address indexed whoDidSplit, uint amountToSplit, address indexed splitToAccount1, address indexed splitToAccount2);
     event LogWithdrawal(address indexed whoWithdrew, uint amountWithdrawn);
-
-    constructor() public {
-
-        // save address of contract deployer for later, just in case
-        owner = msg.sender;
-
-        emit LogSetOwner(owner);
-    }
     
     function splitBetween(address splitToAccount1, address splitToAccount2) public payable {
 
@@ -30,15 +20,16 @@ contract Splitter{
 
         // Not strictly necessary, but provided accounts should probably be different addresses.
         require( splitToAccount1 != splitToAccount2 );
+
+        // amount to be distributed to each of the supplied accounts
+        uint half = msg.value / 2;
         
         // add half of the sent amount to each provided account
-        balances[splitToAccount1] = balances[splitToAccount1].add(msg.value / 2);
-        balances[splitToAccount2] = balances[splitToAccount2].add(msg.value / 2);
+        balances[splitToAccount1] = balances[splitToAccount1].add(half);
+        balances[splitToAccount2] = balances[splitToAccount2].add(half);
 
         // if there is a remainder (an odd wei), add it to the account of the sender.
-        if ( msg.value % 2 > 0 ){
-            balances[msg.sender] = balances[msg.sender].add(msg.value % 2);
-        }
+        balances[msg.sender] = balances[msg.sender].add(msg.value % 2);
         
         emit LogSplit(msg.sender, msg.value, splitToAccount1, splitToAccount2);
     }

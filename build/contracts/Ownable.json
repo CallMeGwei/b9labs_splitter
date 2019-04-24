@@ -2798,35 +2798,9 @@
     "name": "solc",
     "version": "0.5.7+commit.6da8b019.Emscripten.clang"
   },
-  "networks": {
-    "5777": {
-      "events": {
-        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event",
-          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
-        }
-      },
-      "links": {},
-      "address": "0xC250D2973E15e052fdee340E6ca21F2D6F60401d",
-      "transactionHash": "0xd8d868f1eadc9cb9f394747995a806cfc29e802367012088920ce0842e58647e"
-    }
-  },
+  "networks": {},
   "schemaVersion": "3.0.3",
-  "updatedAt": "2019-04-24T02:24:52.644Z",
+  "updatedAt": "2019-04-24T19:58:43.691Z",
   "devdoc": {
     "details": "The Ownable contract has an owner address, and provides basic authorization control functions, this simplifies the implementation of \"user permissions\".",
     "methods": {

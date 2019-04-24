@@ -42,8 +42,8 @@ contract Splitter is Ownable{
 
         // optimistically mark this as transferred, if it fails this will be reverted anyway
         balances[msg.sender] = 0;
-        msg.sender.transfer(balance);
-
         emit LogWithdrawal(msg.sender, balance);
+
+        msg.sender.transfer(balance);
     }
 }

@@ -1,4 +1,4 @@
-{
+const splitterCompiled = {
   "contractName": "Splitter",
   "abi": [
     {

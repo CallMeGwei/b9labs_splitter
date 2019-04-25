@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>Splitter</title>
+    <script src="./web3.js"></script>
+    <script src="./splitterCompiled.js"></script>
+    <script src="./splitter.js"></script>
+</head>
+<style>
+    input {width: 350px;}
+</style>
+<body>
+    Account1: <input type="text" id="account1"><br>
+    Account2: <input type="text" id="account2"><br>
+    <button onclick="splitBetween(document.getElementById('account1').value, document.getElementById('account2').value)" >Split 1 Ether Between</button>
+    <br><br>
+    Account To Check Balance of: <input type="text" id="balOfAccount"><br>
+    <button onclick="checkBalance(document.getElementById('balOfAccount').value, true)">Check Balance</button>
+    <br><br>
+    Your account <span id="addressBal">0x0</span> has a balance of <span id='weiBal'>0</span> wei.<br>
+    <button onclick="withdrawBalance(document.getElementById('balOfAccount').value)">Click here to Withdraw it!</button>
+</body>
+</html>

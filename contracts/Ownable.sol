@@ -5,7 +5,7 @@ pragma solidity ^0.5.7;
  * @dev The Ownable contract has an owner address, and provides basic authorization control
  * functions, this simplifies the implementation of "user permissions".
  */
-contract Ownable {
+contract Ownable{
     address private _owner;
 
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
@@ -30,7 +30,7 @@ contract Ownable {
      * @dev Throws if called by any account other than the owner.
      */
     modifier onlyOwner() {
-        require(isOwner());
+        require(isOwner(), "Ownable, 33: Only the contract owner can perform this activity.");
         _;
     }
 

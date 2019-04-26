@@ -1,0 +1,938 @@
+{
+  "contractName": "OwnablePausable",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "isRunning",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "isOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "runningState",
+          "type": "bool"
+        }
+      ],
+      "name": "setRunning",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "whoChanged",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "isRunning",
+          "type": "bool"
+        }
+      ],
+      "name": "RunningStatusChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600073ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a36001600060146101000a81548160ff0219169083151502179055503373ffffffffffffffffffffffffffffffffffffffff167fad62b9be5571a3bda9471ff06415c6db42e25fb584e9cd5bd215847e31dc797c6001604051808215151515815260200191505060405180910390a26107ad8061013d6000396000f3fe608060405234801561001057600080fd5b506004361061007f576000357c0100000000000000000000000000000000000000000000000000000000900480632014e5d114610084578063715018a6146100a65780638da5cb5b146100b05780638f32d59b146100fa578063dfd200c51461011c578063f2fde38b1461014c575b600080fd5b61008c610190565b604051808215151515815260200191505060405180910390f35b6100ae6101a6565b005b6100b8610272565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b61010261029b565b604051808215151515815260200191505060405180910390f35b61014a6004803603602081101561013257600080fd5b810190808035151590602001909291905050506102f2565b005b61018e6004803603602081101561016257600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506103be565b005b60008060149054906101000a900460ff16905090565b6101ae61029b565b610203576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b600060149054906101000a900460ff16610268576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260398152602001806107496039913960400191505060405180910390fd5b61027061048c565b565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905090565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614905090565b6102fa61029b565b61034f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff167fad62b9be5571a3bda9471ff06415c6db42e25fb584e9cd5bd215847e31dc797c82604051808215151515815260200191505060405180910390a280600060146101000a81548160ff02191690831515021790555050565b6103c661029b565b61041b576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b600060149054906101000a900460ff16610480576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260398152602001806107496039913960400191505060405180910390fd5b610489816105a8565b50565b61049461029b565b6104e9576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b600073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a360008060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550565b6105b061029b565b610605576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b61060e81610611565b50565b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16141561064b57600080fd5b8073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505056fe4f776e61626c652c2033333a204f6e6c792074686520636f6e7472616374206f776e65722063616e20706572666f726d20746869732061637469766974792e5061757361626c652c2032363a2043616e206f6e6c79206578656375746520696620636f6e7472616374206973206e6f74207061757365642ea165627a7a723058200044018f563b910c6bd2beb1c2eff0384a5a50121082457c3ce94a3c5f0624ef0029",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061007f576000357c0100000000000000000000000000000000000000000000000000000000900480632014e5d114610084578063715018a6146100a65780638da5cb5b146100b05780638f32d59b146100fa578063dfd200c51461011c578063f2fde38b1461014c575b600080fd5b61008c610190565b604051808215151515815260200191505060405180910390f35b6100ae6101a6565b005b6100b8610272565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b61010261029b565b604051808215151515815260200191505060405180910390f35b61014a6004803603602081101561013257600080fd5b810190808035151590602001909291905050506102f2565b005b61018e6004803603602081101561016257600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506103be565b005b60008060149054906101000a900460ff16905090565b6101ae61029b565b610203576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b600060149054906101000a900460ff16610268576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260398152602001806107496039913960400191505060405180910390fd5b61027061048c565b565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905090565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614905090565b6102fa61029b565b61034f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff167fad62b9be5571a3bda9471ff06415c6db42e25fb584e9cd5bd215847e31dc797c82604051808215151515815260200191505060405180910390a280600060146101000a81548160ff02191690831515021790555050565b6103c661029b565b61041b576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b600060149054906101000a900460ff16610480576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260398152602001806107496039913960400191505060405180910390fd5b610489816105a8565b50565b61049461029b565b6104e9576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b600073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a360008060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550565b6105b061029b565b610605576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603f81526020018061070a603f913960400191505060405180910390fd5b61060e81610611565b50565b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16141561064b57600080fd5b8073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505056fe4f776e61626c652c2033333a204f6e6c792074686520636f6e7472616374206f776e65722063616e20706572666f726d20746869732061637469766974792e5061757361626c652c2032363a2043616e206f6e6c79206578656375746520696620636f6e7472616374206973206e6f74207061757365642ea165627a7a723058200044018f563b910c6bd2beb1c2eff0384a5a50121082457c3ce94a3c5f0624ef0029",
+  "sourceMap": "74:289:2:-;;;523:10:1;514:6;;:19;;;;;;;;;;;;;;;;;;581:6;;;;;;;;;;;548:40;;577:1;548:40;;;;;;;;;;;;238:4:3;225:10;;:17;;;;;;;;;;;;;;;;;;278:10;257:38;;;290:4;257:38;;;;;;;;;;;;;;;;;;;;;;74:289:2;;;;;;",
+  "deployedSourceMap": "74:289:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;74:289:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;308:82:3;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;126:102:2;;;:::i;:::-;;658:77:1;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;1045:90;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;396:161:3;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;396:161:3;;;;;;;;;;;;;;;;;;;:::i;:::-;;234:126:2;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;234:126:2;;;;;;;;;;;;;;;;;;;:::i;:::-;;308:82:3;350:4;373:10;;;;;;;;;;;366:17;;308:82;:::o;126:102:2:-;862:9:1;:7;:9::i;:::-;854:85;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;606:10:3;;;;;;;;;;;598:80;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;196:25:2;:23;:25::i;:::-;126:102::o;658:77:1:-;696:7;722:6;;;;;;;;;;;715:13;;658:77;:::o;1045:90::-;1085:4;1122:6;;;;;;;;;;;1108:20;;:10;:20;;;1101:27;;1045:90;:::o;396:161:3:-;862:9:1;:7;:9::i;:::-;854:85;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;489:10:3;468:46;;;501:12;468:46;;;;;;;;;;;;;;;;;;;;;;538:12;525:10;;:25;;;;;;;;;;;;;;;;;;396:161;:::o;234:126:2:-;862:9:1;:7;:9::i;:::-;854:85;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;606:10:3;;;;;;;;;;;598:80;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;320:33:2;344:8;320:23;:33::i;:::-;234:126;:::o;1489:137:1:-;862:9;:7;:9::i;:::-;854:85;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1587:1;1550:40;;1571:6;;;;;;;;;;;1550:40;;;;;;;;;;;;1617:1;1600:6;;:19;;;;;;;;;;;;;;;;;;1489:137::o;1797:107::-;862:9;:7;:9::i;:::-;854:85;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1869:28;1888:8;1869:18;:28::i;:::-;1797:107;:::o;2048:183::-;2141:1;2121:22;;:8;:22;;;;2113:31;;;;;;2188:8;2159:38;;2180:6;;;;;;;;;;;2159:38;;;;;;;;;;;;2216:8;2207:6;;:17;;;;;;;;;;;;;;;;;;2048:183;:::o",
+  "source": "pragma solidity 0.5.7;\n\nimport \"./Ownable.sol\";\nimport \"./Pausable.sol\";\n\ncontract OwnablePausable is Ownable, Pausable{\n\n    function renounceOwnership() public onlyOwner onlyIfRunning {\n        super.renounceOwnership();\n    }\n\n    function transferOwnership(address newOwner) public onlyOwner onlyIfRunning {\n        super.transferOwnership(newOwner);\n    }\n\n}",
+  "sourcePath": "/home/andrew/b9labs/dapps/splitter/contracts/OwnablePausable.sol",
+  "ast": {
+    "absolutePath": "/home/andrew/b9labs/dapps/splitter/contracts/OwnablePausable.sol",
+    "exportedSymbols": {
+      "OwnablePausable": [
+        204
+      ]
+    },
+    "id": 205,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 168,
+        "literals": [
+          "solidity",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:22:2"
+      },
+      {
+        "absolutePath": "/home/andrew/b9labs/dapps/splitter/contracts/Ownable.sol",
+        "file": "./Ownable.sol",
+        "id": 169,
+        "nodeType": "ImportDirective",
+        "scope": 205,
+        "sourceUnit": 167,
+        "src": "24:23:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/andrew/b9labs/dapps/splitter/contracts/Pausable.sol",
+        "file": "./Pausable.sol",
+        "id": 170,
+        "nodeType": "ImportDirective",
+        "scope": 205,
+        "sourceUnit": 268,
+        "src": "48:24:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 171,
+              "name": "Ownable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 166,
+              "src": "102:7:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Ownable_$166",
+                "typeString": "contract Ownable"
+              }
+            },
+            "id": 172,
+            "nodeType": "InheritanceSpecifier",
+            "src": "102:7:2"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 173,
+              "name": "Pausable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 267,
+              "src": "111:8:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Pausable_$267",
+                "typeString": "contract Pausable"
+              }
+            },
+            "id": 174,
+            "nodeType": "InheritanceSpecifier",
+            "src": "111:8:2"
+          }
+        ],
+        "contractDependencies": [
+          166,
+          267
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 204,
+        "linearizedBaseContracts": [
+          204,
+          267,
+          166
+        ],
+        "name": "OwnablePausable",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 186,
+              "nodeType": "Block",
+              "src": "186:42:2",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 181,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 599,
+                        "src": "196:5:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_OwnablePausable_$204",
+                          "typeString": "contract super OwnablePausable"
+                        }
+                      },
+                      "id": 183,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "renounceOwnership",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 130,
+                      "src": "196:23:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 184,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "196:25:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 185,
+                  "nodeType": "ExpressionStatement",
+                  "src": "196:25:2"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 187,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 177,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 176,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 100,
+                  "src": "162:9:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "162:9:2"
+              },
+              {
+                "arguments": null,
+                "id": 179,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 178,
+                  "name": "onlyIfRunning",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 266,
+                  "src": "172:13:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "172:13:2"
+              }
+            ],
+            "name": "renounceOwnership",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 175,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "152:2:2"
+            },
+            "returnParameters": {
+              "id": 180,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "186:0:2"
+            },
+            "scope": 204,
+            "src": "126:102:2",
+            "stateMutability": "nonpayable",
+            "superFunction": 130,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 202,
+              "nodeType": "Block",
+              "src": "310:50:2",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 199,
+                        "name": "newOwner",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 189,
+                        "src": "344:8:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 196,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 599,
+                        "src": "320:5:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_OwnablePausable_$204",
+                          "typeString": "contract super OwnablePausable"
+                        }
+                      },
+                      "id": 198,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "transferOwnership",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 142,
+                      "src": "320:23:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 200,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "320:33:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 201,
+                  "nodeType": "ExpressionStatement",
+                  "src": "320:33:2"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 203,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 192,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 191,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 100,
+                  "src": "286:9:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "286:9:2"
+              },
+              {
+                "arguments": null,
+                "id": 194,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 193,
+                  "name": "onlyIfRunning",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 266,
+                  "src": "296:13:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "296:13:2"
+              }
+            ],
+            "name": "transferOwnership",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 190,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 189,
+                  "name": "newOwner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 203,
+                  "src": "261:16:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 188,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "261:7:2",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "260:18:2"
+            },
+            "returnParameters": {
+              "id": 195,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "310:0:2"
+            },
+            "scope": 204,
+            "src": "234:126:2",
+            "stateMutability": "nonpayable",
+            "superFunction": 142,
+            "visibility": "public"
+          }
+        ],
+        "scope": 205,
+        "src": "74:289:2"
+      }
+    ],
+    "src": "0:363:2"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/andrew/b9labs/dapps/splitter/contracts/OwnablePausable.sol",
+    "exportedSymbols": {
+      "OwnablePausable": [
+        204
+      ]
+    },
+    "id": 205,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 168,
+        "literals": [
+          "solidity",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:22:2"
+      },
+      {
+        "absolutePath": "/home/andrew/b9labs/dapps/splitter/contracts/Ownable.sol",
+        "file": "./Ownable.sol",
+        "id": 169,
+        "nodeType": "ImportDirective",
+        "scope": 205,
+        "sourceUnit": 167,
+        "src": "24:23:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/andrew/b9labs/dapps/splitter/contracts/Pausable.sol",
+        "file": "./Pausable.sol",
+        "id": 170,
+        "nodeType": "ImportDirective",
+        "scope": 205,
+        "sourceUnit": 268,
+        "src": "48:24:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 171,
+              "name": "Ownable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 166,
+              "src": "102:7:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Ownable_$166",
+                "typeString": "contract Ownable"
+              }
+            },
+            "id": 172,
+            "nodeType": "InheritanceSpecifier",
+            "src": "102:7:2"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 173,
+              "name": "Pausable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 267,
+              "src": "111:8:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Pausable_$267",
+                "typeString": "contract Pausable"
+              }
+            },
+            "id": 174,
+            "nodeType": "InheritanceSpecifier",
+            "src": "111:8:2"
+          }
+        ],
+        "contractDependencies": [
+          166,
+          267
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 204,
+        "linearizedBaseContracts": [
+          204,
+          267,
+          166
+        ],
+        "name": "OwnablePausable",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 186,
+              "nodeType": "Block",
+              "src": "186:42:2",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 181,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 599,
+                        "src": "196:5:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_OwnablePausable_$204",
+                          "typeString": "contract super OwnablePausable"
+                        }
+                      },
+                      "id": 183,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "renounceOwnership",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 130,
+                      "src": "196:23:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 184,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "196:25:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 185,
+                  "nodeType": "ExpressionStatement",
+                  "src": "196:25:2"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 187,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 177,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 176,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 100,
+                  "src": "162:9:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "162:9:2"
+              },
+              {
+                "arguments": null,
+                "id": 179,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 178,
+                  "name": "onlyIfRunning",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 266,
+                  "src": "172:13:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "172:13:2"
+              }
+            ],
+            "name": "renounceOwnership",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 175,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "152:2:2"
+            },
+            "returnParameters": {
+              "id": 180,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "186:0:2"
+            },
+            "scope": 204,
+            "src": "126:102:2",
+            "stateMutability": "nonpayable",
+            "superFunction": 130,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 202,
+              "nodeType": "Block",
+              "src": "310:50:2",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 199,
+                        "name": "newOwner",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 189,
+                        "src": "344:8:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 196,
+                        "name": "super",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 599,
+                        "src": "320:5:2",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_super$_OwnablePausable_$204",
+                          "typeString": "contract super OwnablePausable"
+                        }
+                      },
+                      "id": 198,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "transferOwnership",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 142,
+                      "src": "320:23:2",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
+                        "typeString": "function (address)"
+                      }
+                    },
+                    "id": 200,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "320:33:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 201,
+                  "nodeType": "ExpressionStatement",
+                  "src": "320:33:2"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 203,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 192,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 191,
+                  "name": "onlyOwner",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 100,
+                  "src": "286:9:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "286:9:2"
+              },
+              {
+                "arguments": null,
+                "id": 194,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 193,
+                  "name": "onlyIfRunning",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 266,
+                  "src": "296:13:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "296:13:2"
+              }
+            ],
+            "name": "transferOwnership",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 190,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 189,
+                  "name": "newOwner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 203,
+                  "src": "261:16:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 188,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "261:7:2",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "260:18:2"
+            },
+            "returnParameters": {
+              "id": 195,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "310:0:2"
+            },
+            "scope": 204,
+            "src": "234:126:2",
+            "stateMutability": "nonpayable",
+            "superFunction": 142,
+            "visibility": "public"
+          }
+        ],
+        "scope": 205,
+        "src": "74:289:2"
+      }
+    ],
+    "src": "0:363:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.7+commit.6da8b019.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.3",
+  "updatedAt": "2019-04-26T03:58:52.933Z",
+  "devdoc": {
+    "methods": {
+      "isOwner()": {
+        "return": "true if `msg.sender` is the owner of the contract."
+      },
+      "owner()": {
+        "return": "the address of the owner."
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

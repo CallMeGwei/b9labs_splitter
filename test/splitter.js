@@ -56,4 +56,30 @@ contract("Splitter", async accounts  => {
         await truffleAssert.reverts(instance.withdraw( {from: nobody} ));
     });
 
+    it("Should revert for an address attempting to pause that is not the owner.", async () => {
+        await truffleAssert.reverts(instance.setRunning( false, {from: nobody} ));
+    });
+
+    it("Should revert for an address attempting to transferOwnership that is not the owner.", async () => {
+        await truffleAssert.reverts(instance.transferOwnership( nobody, {from: nobody} ));
+    });
+
+    it("Owner should be able to pause things.", async () => {
+        let isRunningInitially = await instance.isRunning();
+        assert.isTrue( isRunningInitially, "Initally, contract is paused and shouldn't be." );
+        let txObject = await instance.setRunning(false, {from: alice} );
+        let isRunningLater = await instance.isRunning();
+        assert.isFalse( isRunningLater, "Contract running state was not updated properly." );
+    });
+
+    it("Owner should not be able to transfer ownership if contract is paused.", async () => {
+        let txObject = await instance.setRunning(false, {from: alice} );
+        await truffleAssert.reverts(instance.transferOwnership( bob, {from: alice} ));
+    });
+
+    it("Owner should be able to transfer ownership if contract is running.", async () => {
+        let txObject = instance.transferOwnership( bob, {from: alice} );
+        assert.equal( bob, await instance.owner(), "Owner should be Bob." );
+    });
+
 });

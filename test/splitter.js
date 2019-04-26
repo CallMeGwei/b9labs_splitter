@@ -83,13 +83,13 @@ contract("Splitter", async accounts  => {
     });
 
     it("Owner should be able to pause and unpause things.", async () => {
-        let isRunningInitially = await instance.pauseLevel();
+        let isRunningInitially = await instance.currentPauseLevel();
         assert.equal( isRunningInitially, NoPause, "Initally, contract is paused and shouldn't be." );
         let txObject = await instance.setPauseLevel(HardPause, {from: alice} );
-        let isRunningLater = await instance.pauseLevel();
+        let isRunningLater = await instance.currentPauseLevel();
         assert.equal( isRunningLater, HardPause, "Contract running state was not updated properly." );
         let txObject2 = await instance.setPauseLevel(NoPause, {from: alice} );
-        let isRunningFinally = await instance.pauseLevel();
+        let isRunningFinally = await instance.currentPauseLevel();
         assert.equal( isRunningFinally, NoPause, "Finally, contract is paused and shouldn't be." );
     });
 

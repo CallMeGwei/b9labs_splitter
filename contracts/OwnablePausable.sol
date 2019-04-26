@@ -3,7 +3,7 @@ pragma solidity 0.5.7;
 import "./Ownable.sol";
 import "./Pausable.sol";
 
-contract OwnablePausable is Ownable, Pausable{
+contract OwnablePausable is Pausable{
 
     function renounceOwnership() public onlyOwner hardPausable {
         super.renounceOwnership();

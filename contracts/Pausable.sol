@@ -4,26 +4,27 @@ import "./Ownable.sol";
 
 contract Pausable is Ownable{
 
-    bool private _isRunning;
-
-    event RunningStatusChanged(address indexed whoChanged, bool isRunning);
+    int public pauseLevel; // get the getter for free
+     
+    event PauseLevelChanged(address indexed whoChanged, int pauseLevel);
 
     constructor () internal {
-        _isRunning = true;
-        emit RunningStatusChanged(msg.sender, true);
+        pauseLevel = 0;
+        emit PauseLevelChanged(msg.sender, pauseLevel);
     }
 
-    function isRunning() public view returns (bool) {
-        return _isRunning;
+    function setPauseLevel(int runningState) public onlyOwner {
+         emit PauseLevelChanged(msg.sender, runningState);
+         pauseLevel = runningState;
     }
 
-    function setRunning(bool runningState) public onlyOwner {
-         emit RunningStatusChanged(msg.sender, runningState);
-         _isRunning = runningState;
+    modifier hardPausable() {
+        require(pauseLevel < 2, "Pausable, 26: Can only execute if contract is not hard-paused.");
+        _;
     }
 
-    modifier onlyIfRunning() {
-        require(_isRunning, "Pausable, 26: Can only execute if contract is not paused.");
+    modifier softPausable() {
+        require( pauseLevel < 1, "Pausable, 31: Can only execute if contract is not paused." );
         _;
     }
 }

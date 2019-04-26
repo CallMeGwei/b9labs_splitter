@@ -5,11 +5,11 @@ import "./Pausable.sol";
 
 contract OwnablePausable is Ownable, Pausable{
 
-    function renounceOwnership() public onlyOwner onlyIfRunning {
+    function renounceOwnership() public onlyOwner hardPausable {
         super.renounceOwnership();
     }
 
-    function transferOwnership(address newOwner) public onlyOwner onlyIfRunning {
+    function transferOwnership(address newOwner) public onlyOwner hardPausable {
         super.transferOwnership(newOwner);
     }
 

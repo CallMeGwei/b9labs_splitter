@@ -12,7 +12,7 @@ contract Splitter is OwnablePausable{
     event LogSplit(address indexed whoDidSplit, uint amountToSplit, address indexed splitToAccount1, address indexed splitToAccount2);
     event LogWithdrawal(address indexed whoWithdrew, uint amountWithdrawn);
     
-    function splitBetween(address splitToAccount1, address splitToAccount2) public payable onlyIfRunning {
+    function splitBetween(address splitToAccount1, address splitToAccount2) public payable softPausable {
 
         // some value must have been sent to split
         require ( msg.value > 0, "Splitter, 19: Some ether must be sent to be split." );
@@ -37,7 +37,7 @@ contract Splitter is OwnablePausable{
         emit LogSplit(msg.sender, msg.value, splitToAccount1, splitToAccount2);
     }
 
-    function withdraw() public onlyIfRunning {
+    function withdraw() public softPausable {
 
         uint balance = balances[msg.sender];
 

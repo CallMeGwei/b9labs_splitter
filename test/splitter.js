@@ -3,16 +3,26 @@ const truffleAssert = require("truffle-assertions");
 
 const { toBN, toWei } = web3.utils;
 
-let instance;
-
-beforeEach(async () => {
-    instance = await Splitter.new();
-});
-
 contract("Splitter", async accounts  => {
+
+    let instance;
+
+    beforeEach(async () => {
+        instance = await Splitter.new( {from: alice} );
+    });
 
     // assigning variables to a few of the provided accounts in order
     const [ alice, bob, carol, nobody ] = accounts;
+    const zero = "0x0000000000000000000000000000000000000000";
+
+    it("Should revert for an address attempting to split between addresses where one is the zero address", async () => {
+        await truffleAssert.reverts(instance.splitBetween( bob, zero, {from: alice} ));
+        await truffleAssert.reverts(instance.splitBetween( zero, carol, {from: alice} ));
+    });
+
+    it("Should revert if any ether is sent to the contract outside of a function call.", async () => {
+        await truffleAssert.reverts(web3.eth.sendTransaction( {to: instance.address, from: alice, value: toWei("1", "finney") } ));
+    });
     
     it("Alice's account should be debited by one finney.", async () => {
         let aliceInitalBalance = new toBN(await web3.eth.getBalance(alice));  // Alice's ethereum balance.
@@ -64,12 +74,15 @@ contract("Splitter", async accounts  => {
         await truffleAssert.reverts(instance.transferOwnership( nobody, {from: nobody} ));
     });
 
-    it("Owner should be able to pause things.", async () => {
+    it("Owner should be able to pause and unpause things.", async () => {
         let isRunningInitially = await instance.isRunning();
         assert.isTrue( isRunningInitially, "Initally, contract is paused and shouldn't be." );
         let txObject = await instance.setRunning(false, {from: alice} );
         let isRunningLater = await instance.isRunning();
         assert.isFalse( isRunningLater, "Contract running state was not updated properly." );
+        let txObject2 = await instance.setRunning(true, {from: alice} );
+        let isRunningFinally = await instance.isRunning();
+        assert.isTrue( isRunningFinally, "Finally, contract is paused and shouldn't be." );
     });
 
     it("Owner should not be able to transfer ownership if contract is paused.", async () => {
